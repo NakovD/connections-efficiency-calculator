@@ -170,8 +170,11 @@
   border-bottom: none;
 }
 
+/*
+ * Only tabular figures here: a `text-align: right` would lose to the
+ * `.entry-table td` rule above on specificity, so the columns stay left-aligned.
+ */
 .numeric {
-  text-align: right;
   font-variant-numeric: tabular-nums;
 }
 

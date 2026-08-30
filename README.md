@@ -1,5 +1,7 @@
 # Connections Efficiency Calculator
 
+**Live app:** https://nakovd.github.io/connections-efficiency-calculator/
+
 A tiny single-page calculator for comparing browser-game upgrades by how much stat
 each spent "connection" buys you.
 
@@ -42,10 +44,26 @@ Then open the URL Vite prints (by default http://localhost:5173).
 | --- | --- |
 | `npm run dev` | Start the development server. |
 | `npm run build` | Type-check and build for production into `dist/`. |
+| `npm run build:standalone` | Build a single self-contained HTML file into `standalone/`. |
 | `npm run preview` | Serve the production build locally. |
 | `npm test` | Run the unit tests once. |
 | `npm run test:watch` | Run the tests in watch mode. |
 | `npm run lint` | Lint the source with oxlint. |
+
+## Offline standalone build
+
+For using the calculator without a dev server or an internet connection:
+
+```bash
+npm run build:standalone
+```
+
+This writes `standalone/connections-efficiency-calculator.html` — one file with the
+JavaScript, CSS and favicon inlined. Double-click it and it opens in the browser.
+It can be moved anywhere or copied to another machine on its own; no Node.js
+installation is needed to run it.
+
+Rerun the command after changing the source to refresh the file.
 
 ## Input rules
 

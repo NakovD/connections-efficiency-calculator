@@ -68,8 +68,10 @@ Rerun the command after changing the source to refresh the file.
 ## Input rules
 
 Connections and stat are both **whole numbers greater than zero**. Decimals, zero and
-negative values are rejected with an inline message. The name is optional; entries
-without one show as *Unnamed*.
+negative values are rejected with an inline message. Name is picked from a fixed
+dropdown list and is optional; entries left without one show as *Unnamed*. To add a
+new upgrade name to the dropdown, add it to `NAME_OPTIONS` in
+[src/lib/nameOptions.ts](src/lib/nameOptions.ts).
 
 ## Project structure
 

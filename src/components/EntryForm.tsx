@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { createEntry, validate, type Entry, type EntryInput, type FieldErrors } from '../lib/entries';
+import { NAME_OPTIONS } from '../lib/nameOptions';
 
 const EMPTY_INPUT: EntryInput = { name: '', connections: '', stat: '' };
 
@@ -38,13 +39,14 @@ export function EntryForm({ onAdd }: Props) {
     <form className="entry-form" onSubmit={handleSubmit} noValidate>
       <div className="field field--wide">
         <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          type="text"
-          value={input.name}
-          placeholder="e.g. Chemist — Intellect"
-          onChange={(event) => update('name', event.target.value)}
-        />
+        <select id="name" value={input.name} onChange={(event) => update('name', event.target.value)}>
+          <option value="">— Select —</option>
+          {NAME_OPTIONS.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
         <p className="hint">Optional</p>
       </div>
 

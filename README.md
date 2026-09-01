@@ -67,8 +67,11 @@ Rerun the command after changing the source to refresh the file.
 
 ## Input rules
 
-Connections and stat are both **whole numbers greater than zero**. Decimals, zero and
-negative values are rejected with an inline message. Name is picked from a fixed
+Connections and stat are both **whole numbers greater than zero**. Both fields group
+digits by thousands as you type (e.g. `120000` displays as `120 000`); anything that
+isn't a digit, including decimal points, is dropped as you type rather than
+validated afterwards. Decimals, zero and negative values are rejected with an inline
+message. Name is picked from a fixed
 dropdown list and is optional; entries left without one show as *Unnamed*. To add a
 new upgrade name to the dropdown, add it to `NAME_OPTIONS` in
 [src/lib/nameOptions.ts](src/lib/nameOptions.ts).

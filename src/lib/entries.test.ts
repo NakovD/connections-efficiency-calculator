@@ -4,6 +4,7 @@ import {
   createEntry,
   efficiencyOf,
   formatEfficiency,
+  formatInteger,
   sortEntries,
   validate,
   type Entry,
@@ -105,5 +106,13 @@ describe('formatEfficiency', () => {
     expect(formatEfficiency(4)).toBe('4.00');
     expect(formatEfficiency(1 / 3)).toBe('0.33');
     expect(formatEfficiency(1234.5)).toBe('1,234.50');
+  });
+});
+
+describe('formatInteger', () => {
+  it('groups by thousands with a space, matching the entry form inputs', () => {
+    expect(formatInteger(48)).toBe('48');
+    expect(formatInteger(120000)).toBe('120 000');
+    expect(formatInteger(1000000)).toBe('1 000 000');
   });
 });

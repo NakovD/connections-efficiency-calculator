@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { createEntry, validate, type Entry, type EntryInput, type FieldErrors } from '../lib/entries';
 import { NAME_OPTIONS } from '../lib/nameOptions';
+import { NumericField } from './NumericField';
 
 const EMPTY_INPUT: EntryInput = { name: '', connections: '', stat: '' };
 
@@ -52,17 +53,13 @@ export function EntryForm({ onAdd }: Props) {
 
       <div className="field">
         <label htmlFor="connections">Connections</label>
-        <input
+        <NumericField
           id="connections"
-          type="number"
-          inputMode="numeric"
-          min={1}
-          step={1}
           value={input.connections}
           placeholder="12"
-          aria-invalid={errors.connections ? true : undefined}
-          aria-describedby={errors.connections ? 'connections-error' : undefined}
-          onChange={(event) => update('connections', event.target.value)}
+          invalid={Boolean(errors.connections)}
+          describedBy={errors.connections ? 'connections-error' : undefined}
+          onChange={(digits) => update('connections', digits)}
         />
         {errors.connections && (
           <p className="hint hint--error" id="connections-error">
@@ -73,17 +70,13 @@ export function EntryForm({ onAdd }: Props) {
 
       <div className="field">
         <label htmlFor="stat">Stat</label>
-        <input
+        <NumericField
           id="stat"
-          type="number"
-          inputMode="numeric"
-          min={1}
-          step={1}
           value={input.stat}
           placeholder="48"
-          aria-invalid={errors.stat ? true : undefined}
-          aria-describedby={errors.stat ? 'stat-error' : undefined}
-          onChange={(event) => update('stat', event.target.value)}
+          invalid={Boolean(errors.stat)}
+          describedBy={errors.stat ? 'stat-error' : undefined}
+          onChange={(digits) => update('stat', digits)}
         />
         {errors.stat && (
           <p className="hint hint--error" id="stat-error">

@@ -1,3 +1,5 @@
+import { groupDigits } from './numberInput';
+
 export type Entry = {
   id: string;
   /** Free-text label. May be empty; the table renders a placeholder instead. */
@@ -91,8 +93,10 @@ export function formatEfficiency(value: number): string {
   return efficiencyFormatter.format(value);
 }
 
-const integerFormatter = new Intl.NumberFormat('en-US');
-
+/**
+ * Groups by thousands with a space, matching how the Connections and Stat
+ * inputs display digits as you type (see numberInput.ts).
+ */
 export function formatInteger(value: number): string {
-  return integerFormatter.format(value);
+  return groupDigits(String(value));
 }

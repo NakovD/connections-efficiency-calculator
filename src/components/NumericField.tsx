@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, type ChangeEvent } from 'react';
+import { useLayoutEffect, useRef, type ChangeEvent, type KeyboardEvent } from 'react';
 import { groupDigits, reformatNumericInput } from '../lib/numberInput';
 
 type Props = {
@@ -9,6 +9,7 @@ type Props = {
   invalid?: boolean;
   describedBy?: string;
   onChange: (digits: string) => void;
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
 };
 
 /**
@@ -16,7 +17,7 @@ type Props = {
  * user types ("120000" -> "120 000"), anything else (decimal points, minus
  * signs, letters) is dropped, and there's no native spinner to click through.
  */
-export function NumericField({ id, value, placeholder, invalid, describedBy, onChange }: Props) {
+export function NumericField({ id, value, placeholder, invalid, describedBy, onChange, onKeyDown }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const pendingCaret = useRef<number | null>(null);
 
@@ -48,6 +49,7 @@ export function NumericField({ id, value, placeholder, invalid, describedBy, onC
       aria-invalid={invalid ? true : undefined}
       aria-describedby={describedBy}
       onChange={handleChange}
+      onKeyDown={onKeyDown}
     />
   );
 }

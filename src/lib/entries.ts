@@ -47,19 +47,37 @@ export function validate(input: EntryInput): FieldErrors {
   return errors;
 }
 
-/** Returns the new entry, or null when the input does not validate. */
-export function createEntry(input: EntryInput, addedAt: number): Entry | null {
+function parseFields(input: EntryInput): Pick<Entry, 'connections' | 'stat'> | null {
   const connections = parsePositiveInteger(input.connections);
   const stat = parsePositiveInteger(input.stat);
   if (connections === null || stat === null) return null;
+  return { connections, stat };
+}
+
+/** Returns the new entry, or null when the input does not validate. */
+export function createEntry(input: EntryInput, addedAt: number): Entry | null {
+  const fields = parseFields(input);
+  if (!fields) return null;
 
   return {
     id: `${addedAt}-${Math.random().toString(36).slice(2, 8)}`,
     name: input.name.trim(),
-    connections,
-    stat,
+    ...fields,
     addedAt,
   };
+}
+
+/**
+ * Returns `entry` with its editable fields replaced by `input`, or null when
+ * the input does not validate. The id and insertion order are kept, so
+ * editing a row doesn't change its tie-break position among equal-efficiency
+ * entries.
+ */
+export function updateEntry(entry: Entry, input: EntryInput): Entry | null {
+  const fields = parseFields(input);
+  if (!fields) return null;
+
+  return { ...entry, name: input.name.trim(), ...fields };
 }
 
 /**

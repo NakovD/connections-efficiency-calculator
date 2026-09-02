@@ -15,6 +15,8 @@ every entry by **stat per connection** — best value first.
 - The list is sorted by efficiency, highest first. Ties break towards the cheaper
   entry, then towards whichever was added first.
 - Every row tied for the highest efficiency is highlighted and marked **Best value**.
+- Rows can be edited in place — click **Edit**, change the fields, then **Save** (or
+  **Cancel**). Enter saves, Escape cancels. Only one row edits at a time.
 - Rows can be deleted individually, or the whole list can be cleared at once.
 
 ## What it deliberately does not do
@@ -83,10 +85,15 @@ src/
   App.tsx                  Page layout and the in-memory entry list
   components/
     EntryForm.tsx          Input form and validation feedback
-    EntryTable.tsx         Sorted results table
+    EntryTable.tsx         Sorted results table; tracks which row is being edited
+    EntryRow.tsx           A results row in its normal, read-only display
+    EntryEditRow.tsx       The same row swapped into edit mode
+    NumericField.tsx       Whole-number input with thousands grouping, used by both
   lib/
     entries.ts             Pure logic: parsing, validation, sorting, formatting
     entries.test.ts        Unit tests for the above
+    numberInput.ts         Digit grouping and caret-position helpers behind NumericField
+    numberInput.test.ts    Unit tests for the above
 ```
 
 The logic in `src/lib/entries.ts` is free of React so it can be tested directly.

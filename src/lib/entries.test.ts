@@ -6,6 +6,7 @@ import {
   formatEfficiency,
   formatInteger,
   sortEntries,
+  updateEntry,
   validate,
   type Entry,
 } from './entries';
@@ -55,6 +56,19 @@ describe('createEntry', () => {
 
   it('returns null for invalid input', () => {
     expect(createEntry({ name: 'x', connections: '0', stat: '5' }, 1)).toBeNull();
+  });
+});
+
+describe('updateEntry', () => {
+  it('replaces the editable fields but keeps id and insertion order', () => {
+    const original = entry({ id: 'keep-me', connections: 12, stat: 48, addedAt: 7, name: 'Old' });
+    const updated = updateEntry(original, { name: 'New', connections: '20', stat: '50' });
+    expect(updated).toEqual({ id: 'keep-me', addedAt: 7, name: 'New', connections: 20, stat: 50 });
+  });
+
+  it('returns null for invalid input and leaves the original entry alone', () => {
+    const original = entry({ connections: 12, stat: 48 });
+    expect(updateEntry(original, { name: '', connections: '0', stat: '5' })).toBeNull();
   });
 });
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { EntryForm } from './components/EntryForm';
 import { EntryTable } from './components/EntryTable';
-import type { Entry } from './lib/entries';
+import { updateEntry, type Entry, type EntryInput } from './lib/entries';
 import './App.css';
 
 export default function App() {
@@ -10,6 +10,18 @@ export default function App() {
 
   function handleAdd(entry: Entry) {
     setEntries((current) => [...current, entry]);
+  }
+
+  /** Returns whether the edit validated and was applied, so the row knows whether to close. */
+  function handleUpdate(id: string, input: EntryInput): boolean {
+    const target = entries.find((entry) => entry.id === id);
+    if (!target) return false;
+
+    const updated = updateEntry(target, input);
+    if (!updated) return false;
+
+    setEntries((current) => current.map((entry) => (entry.id === id ? updated : entry)));
+    return true;
   }
 
   function handleDelete(id: string) {
@@ -45,7 +57,7 @@ export default function App() {
             </button>
           )}
         </div>
-        <EntryTable entries={entries} onDelete={handleDelete} />
+        <EntryTable entries={entries} onUpdate={handleUpdate} onDelete={handleDelete} />
       </section>
     </main>
   );

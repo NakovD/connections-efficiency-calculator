@@ -1,18 +1,19 @@
-import {
-  bestEfficiency,
-  efficiencyOf,
-  formatEfficiency,
-  formatInteger,
-  sortEntries,
-  type Entry,
-} from '../lib/entries';
+import { useState } from 'react';
+import { bestEfficiency, efficiencyOf, sortEntries, type Entry, type EntryInput } from '../lib/entries';
+import { EntryEditRow } from './EntryEditRow';
+import { EntryRow } from './EntryRow';
 
 type Props = {
   entries: readonly Entry[];
+  onUpdate: (id: string, input: EntryInput) => boolean;
   onDelete: (id: string) => void;
 };
 
-export function EntryTable({ entries, onDelete }: Props) {
+export function EntryTable({ entries, onUpdate, onDelete }: Props) {
+  // Only one row edits at a time; its id lives here so the table knows which
+  // row to swap for an EntryEditRow.
+  const [editingId, setEditingId] = useState<string | null>(null);
+
   if (entries.length === 0) {
     return (
       <p className="empty-state">
@@ -37,32 +38,29 @@ export function EntryTable({ entries, onDelete }: Props) {
           </tr>
         </thead>
         <tbody>
-          {sorted.map((entry) => {
-            const efficiency = efficiencyOf(entry);
-            const isBest = efficiency === best;
-
-            return (
-              <tr key={entry.id} className={isBest ? 'is-best' : undefined}>
-                <td>
-                  {entry.name || <span className="unnamed">Unnamed</span>}
-                  {isBest && <span className="badge">Best value</span>}
-                </td>
-                <td className="numeric">{formatInteger(entry.connections)}</td>
-                <td className="numeric">{formatInteger(entry.stat)}</td>
-                <td className="numeric efficiency">{formatEfficiency(efficiency)}</td>
-                <td>
-                  <button
-                    type="button"
-                    className="button button--ghost"
-                    onClick={() => onDelete(entry.id)}
-                    aria-label={`Delete ${entry.name || 'unnamed entry'}`}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
+          {sorted.map((entry) =>
+            entry.id === editingId ? (
+              <EntryEditRow
+                key={entry.id}
+                entry={entry}
+                onSave={(input) => {
+                  const saved = onUpdate(entry.id, input);
+                  if (saved) setEditingId(null);
+                  return saved;
+                }}
+                onCancel={() => setEditingId(null)}
+              />
+            ) : (
+              <EntryRow
+                key={entry.id}
+                entry={entry}
+                isBest={best !== null && efficiencyOf(entry) === best}
+                actionsDisabled={editingId !== null}
+                onStartEdit={() => setEditingId(entry.id)}
+                onDelete={() => onDelete(entry.id)}
+              />
+            ),
+          )}
         </tbody>
       </table>
     </div>

@@ -197,6 +197,43 @@
   color: var(--best-text);
 }
 
+.is-editing {
+  background: var(--accent-soft);
+}
+
+.entry-table select,
+.entry-table td input {
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: 100%;
+  min-width: 6ch;
+}
+
+.entry-table td input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.row-actions .button {
+  margin-top: 0;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.row-actions .button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .badge {
   display: inline-block;
   margin-left: 0.5rem;

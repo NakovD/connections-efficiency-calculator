@@ -15,6 +15,8 @@ every entry by **stat per connection** — best value first.
 - The list is sorted by efficiency, highest first. Ties break towards the cheaper
   entry, then towards whichever was added first.
 - Every row tied for the highest efficiency is highlighted and marked **Best value**.
+- Rows can be edited in place — click **Edit**, change the fields, then **Save** (or
+  **Cancel**). Enter saves, Escape cancels. Only one row edits at a time.
 - Rows can be deleted individually, or the whole list can be cleared at once.
 
 ## What it deliberately does not do
@@ -67,9 +69,14 @@ Rerun the command after changing the source to refresh the file.
 
 ## Input rules
 
-Connections and stat are both **whole numbers greater than zero**. Decimals, zero and
-negative values are rejected with an inline message. The name is optional; entries
-without one show as *Unnamed*.
+Connections and stat are both **whole numbers greater than zero**. Both fields group
+digits by thousands as you type (e.g. `120000` displays as `120 000`); anything that
+isn't a digit, including decimal points, is dropped as you type rather than
+validated afterwards. Decimals, zero and negative values are rejected with an inline
+message. Name is picked from a fixed
+dropdown list and is optional; entries left without one show as *Unnamed*. To add a
+new upgrade name to the dropdown, add it to `NAME_OPTIONS` in
+[src/lib/nameOptions.ts](src/lib/nameOptions.ts).
 
 ## Project structure
 
@@ -78,10 +85,15 @@ src/
   App.tsx                  Page layout and the in-memory entry list
   components/
     EntryForm.tsx          Input form and validation feedback
-    EntryTable.tsx         Sorted results table
+    EntryTable.tsx         Sorted results table; tracks which row is being edited
+    EntryRow.tsx           A results row in its normal, read-only display
+    EntryEditRow.tsx       The same row swapped into edit mode
+    NumericField.tsx       Whole-number input with thousands grouping, used by both
   lib/
     entries.ts             Pure logic: parsing, validation, sorting, formatting
     entries.test.ts        Unit tests for the above
+    numberInput.ts         Digit grouping and caret-position helpers behind NumericField
+    numberInput.test.ts    Unit tests for the above
 ```
 
 The logic in `src/lib/entries.ts` is free of React so it can be tested directly.

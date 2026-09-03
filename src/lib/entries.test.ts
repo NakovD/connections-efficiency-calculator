@@ -4,7 +4,9 @@ import {
   createEntry,
   efficiencyOf,
   formatEfficiency,
+  formatInteger,
   sortEntries,
+  updateEntry,
   validate,
   type Entry,
 } from './entries';
@@ -57,6 +59,19 @@ describe('createEntry', () => {
   });
 });
 
+describe('updateEntry', () => {
+  it('replaces the editable fields but keeps id and insertion order', () => {
+    const original = entry({ id: 'keep-me', connections: 12, stat: 48, addedAt: 7, name: 'Old' });
+    const updated = updateEntry(original, { name: 'New', connections: '20', stat: '50' });
+    expect(updated).toEqual({ id: 'keep-me', addedAt: 7, name: 'New', connections: 20, stat: 50 });
+  });
+
+  it('returns null for invalid input and leaves the original entry alone', () => {
+    const original = entry({ connections: 12, stat: 48 });
+    expect(updateEntry(original, { name: '', connections: '0', stat: '5' })).toBeNull();
+  });
+});
+
 describe('sortEntries', () => {
   it('orders by efficiency, highest first', () => {
     const sorted = sortEntries([
@@ -105,5 +120,13 @@ describe('formatEfficiency', () => {
     expect(formatEfficiency(4)).toBe('4.00');
     expect(formatEfficiency(1 / 3)).toBe('0.33');
     expect(formatEfficiency(1234.5)).toBe('1,234.50');
+  });
+});
+
+describe('formatInteger', () => {
+  it('groups by thousands with a space, matching the entry form inputs', () => {
+    expect(formatInteger(48)).toBe('48');
+    expect(formatInteger(120000)).toBe('120 000');
+    expect(formatInteger(1000000)).toBe('1 000 000');
   });
 });

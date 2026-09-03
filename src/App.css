@@ -47,7 +47,8 @@
   color: var(--text-muted);
 }
 
-.field input {
+.field input,
+.field select {
   padding: 0.55rem 0.7rem;
   font: inherit;
   color: var(--text);
@@ -57,7 +58,8 @@
   width: 100%;
 }
 
-.field input:focus-visible {
+.field input:focus-visible,
+.field select:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
 }
@@ -193,6 +195,43 @@
 
 .is-best .efficiency {
   color: var(--best-text);
+}
+
+.is-editing {
+  background: var(--accent-soft);
+}
+
+.entry-table select,
+.entry-table td input {
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  width: 100%;
+  min-width: 6ch;
+}
+
+.entry-table td input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.row-actions .button {
+  margin-top: 0;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.row-actions .button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .badge {
